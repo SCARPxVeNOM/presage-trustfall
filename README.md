@@ -10,6 +10,7 @@
 </p>
 
 <p align="center">
+  <a href="https://youtu.be/x0eycSU0Zq0"><b>▶ Demo video (1:29)</b></a> ·
   <a href="#quick-start">Quick start</a> ·
   <a href="#why-trustfall">Why TrustFall</a> ·
   <a href="#how-it-works">How it works</a> ·
