@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/logo.svg" width="72" alt="TrustFall logo">
+  <img src="docs/images/logo.png" width="72" alt="TrustFall logo">
 </p>
 
 <h1 align="center">TrustFall</h1>
