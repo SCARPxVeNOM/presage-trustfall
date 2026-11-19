@@ -1,0 +1,36 @@
+{
+  "name": "trustfall",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A crash-test lab for camera vital signs: replays one clip through the SmartSpectra SDK under controlled damage and checks whether confidence catches the fall.",
+  "main": "src/main/main.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "start": "npm run build && electron .",
+    "mock": "npm run build && TRUSTFALL_MOCK=1 electron .",
+    "crash": "node src/cli.js run",
+    "test": "node --test test/*.test.js"
+  },
+  "bin": {
+    "trustfall": "src/cli.js"
+  },
+  "keywords": [
+    "smartspectra",
+    "presagechallenge",
+    "rppg",
+    "metamorphic-testing",
+    "reliability"
+  ],
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@smartspectra/node-sdk": "3.5.0"
+  },
+  "devDependencies": {
+    "electron": "43.8.1",
+    "esbuild": "0.25.12"
+  }
+}

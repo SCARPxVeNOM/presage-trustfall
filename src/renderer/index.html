@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' lab: data: blob:; media-src 'self' lab: blob: mediastream:; style-src 'self' 'unsafe-inline'; worker-src 'self' blob:; script-src 'self'; connect-src 'self' lab:">
+  <title>TrustFall</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div id="banner" class="banner" hidden></div>
+  <div class="shell">
+    <header class="top" id="top"></header>
+    <nav class="rail" id="rail"></nav>
+    <main id="view"></main>
+  </div>
+  <div id="tooltip" class="tooltip" hidden></div>
+  <div id="modal" class="modal" hidden></div>
+  <script src="../../dist/renderer.js"></script>
+</body>
+</html>
