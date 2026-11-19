@@ -144,7 +144,7 @@ test/          analysis tests (npm test)
 Requirements: macOS on Apple Silicon, Windows x64 or Linux x64/arm64 (the SDK's Node platforms), Node 20+ and ffmpeg.
 
 ```bash
-git clone https://github.com/SCARPxVeNOM/presage-hack.git && cd presage-hack
+git clone https://github.com/SCARPxVeNOM/presage-trustfall.git && cd presage-trustfall
 npm install
 brew install ffmpeg                # or apt install ffmpeg / choco install ffmpeg
 cp .env.example .env               # then paste your key into .env
