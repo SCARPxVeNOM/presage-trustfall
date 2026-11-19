@@ -59,7 +59,7 @@ function render(view, ctx) {
     $(`#c-${c.id}`, view).oninput = (e) => {
       st.v[c.id] = Number(e.target.value);
       $(`#o-${c.id}`, view).textContent = c.fmt(st.v[c.id]);
-      mark(st, `${c.label} ${c.fmt(st.v[c.id])}`);
+      mark(st, `${c.label} ${c.fmt(st.v[c.id])}`, c.id);
     };
   }
   $('#c-cover', view).onchange = (e) => { st.cover = e.target.value; mark(st, `Cover ${st.cover}`); };
@@ -77,8 +77,14 @@ function render(view, ctx) {
   makeNoise(st);
 }
 
-function mark(st, label) {
-  if (st.on) st.events.push({ t: (performance.now() - st.t0) / 1000, label });
+function mark(st, label, key = label) {
+  if (!st.on) return;
+  const t = (performance.now() - st.t0) / 1000;
+  // Dragging a slider fires an input event per step; keep the drag as one
+  // marker that shows where it ended up.
+  const last = st.events[st.events.length - 1];
+  if (last && last.key === key && t - last.at < 1.5) { last.label = label; last.at = t; return; }
+  st.events.push({ t, at: t, key, label });
 }
 
 function makeNoise(st) {
@@ -199,9 +205,12 @@ function drawHist(st, view) {
   pts.forEach((p, i) => (i ? g.lineTo(x(p.t), y(p.v)) : g.moveTo(x(p.t), y(p.v)))); g.stroke();
   for (const p of pts) if (st.baseline != null && p.s && Math.abs(p.v - st.baseline) > GAP) { g.fillStyle = '#f0532d'; g.beginPath(); g.arc(x(p.t), y(p.v), 6, 0, 7); g.fill(); }
   g.fillStyle = '#111'; g.strokeStyle = 'rgba(17,17,17,0.3)'; g.lineWidth = 2; g.setLineDash([6, 6]);
+  let free = -Infinity;
   for (const e of st.events.filter((ev) => ev.t >= t0)) {
     g.beginPath(); g.moveTo(x(e.t), m.t); g.lineTo(x(e.t), h - m.b); g.stroke();
-    g.fillText(e.label, x(e.t) + 6, h - 8);
+    // A label that would run into the previous one is left off; its line stays.
+    const lx = x(e.t) + 6;
+    if (lx >= free) { g.fillText(e.label, lx, h - 8); free = lx + g.measureText(e.label).width + 14; }
   }
   g.setLineDash([]);
 }
