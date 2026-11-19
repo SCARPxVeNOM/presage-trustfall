@@ -14,8 +14,7 @@
   <a href="#why-trustfall">Why TrustFall</a> ·
   <a href="#how-it-works">How it works</a> ·
   <a href="#the-maths-behind-the-verdict">The maths</a> ·
-  <a href="#architecture">Architecture</a> ·
-  <a href="#consent-and-data-handling">Privacy</a>
+  <a href="#architecture">Architecture</a>
 </p>
 
 <p align="center">
@@ -179,25 +178,6 @@ As a CI gate:
 
 > [!TIP]
 > Feed recorded video at real time. `useFile()` takes `interframeDelayMs`, and `0` means "as fast as possible". On a 60 s clip that made the SDK drop 698 of 1,799 frames and send 2 pulse readings instead of 55. TrustFall paces each copy at its own frame rate (`1000 / fps`); set `TRUSTFALL_FRAME_DELAY_MS` to override.
-
-## How a copy is made
-
-All copies are rendered by ffmpeg from the same 30 fps, 1280×720, near-lossless master (`crf 12`) with identical encoder settings, so the only difference between two files is the change under test. See [`src/core/suite.js`](src/core/suite.js) for each filter.
-
-- **Dim room** darkens in linear light (sRGB gamma 2.2); one stop is half the light.
-- **Flickering light** multiplies brightness by $1 + 0.02 \sin(2\pi f t)$, with $f$ set 22 bpm away from your measured pulse, so a reading that follows the flicker is easy to spot. A second copy drifts exposure by 8% at a breathing-like rate.
-- **Shaky camera** sways the whole frame with a mix of slow sines (0.2 to 0.8 Hz).
-- **Face covered** boxes are placed from the face landmarks the SDK returns on the original clip.
-- **Played faster / slower** retimes frames (`setpts`) and resamples to 30 fps.
-
-## Consent and data handling
-
-- **Consent.** The app opens on a consent screen that says what is recorded, where it is stored and what leaves the computer. The camera stays off until you agree, and after that turns on only when you press a button that says so. Consent can be withdrawn in *Consent & data*.
-- **Storage.** Clips (video of your face), any reference pulse you type in, and crash-test readings are written to one folder: `./data` by default (`TRUSTFALL_DATA` overrides it). Nothing else is stored.
-- **Sharing.** Nothing is uploaded. There are no accounts, analytics or AI services.
-- **SDK network use.** SmartSpectra computes readings on-device and contacts Presage to check the API key and usage. TrustFall creates every SDK session with `enableTelemetry: false`, so no session summaries or readiness reports are sent ([SDK telemetry & privacy](https://smartspectra.presagetech.com/docs/telemetry-and-privacy)).
-- **Retention and deletion.** Data is kept until you delete it. *Delete all data* (or `node src/cli.js delete-all --yes`) removes the whole folder; single clips can be deleted from the home screen.
-- **Other people.** Only record yourself or someone who has agreed beforehand. No covert monitoring.
 
 ## Limits
 
